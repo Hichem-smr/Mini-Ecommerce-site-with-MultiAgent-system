@@ -1,0 +1,102 @@
+{
+    "Guitar": [
+        {
+            "instrument" : "Guitar",
+            "brand" : "Musicman",
+            "type": "Electric",
+            "name": "Majesty",
+            "color": "Red",
+            "bridge": "Edge III",
+            "frets": "22",
+            "quantity": 10,
+            "price": "2000",
+            "date_posted" : "20-April-2022"
+        },
+
+        {
+            "instrument" : "Guitar",
+            "brand" : "Musicman",
+            "type": "Acoustic",
+            "name": "LUNA Oracle",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 2,
+            "price": "1000",
+            "date_posted" : "25-April-2022"
+            
+            
+        },
+
+        {
+            "instrument" : "Guitar",
+            "brand" : "Musicman",
+            "type": "Electro-Acoustic",
+            "name": "Raminez",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 10,
+            "price": "750",
+            "date_posted" : "10-April-2022"
+            
+        }
+
+    ],
+
+    "Amp": [
+        {
+            "instrument" : "Amp",
+            "brand" : "Musicman",
+            "type": "Electro-Acoustic",
+            "name": "Musicman Street",
+            "color": "White",
+            "bridge": "Head",
+            "frets": "5",
+            "quantity": 5,
+            "price": "2000",
+            "date_posted" : "19-April-2022"
+        },
+
+        {
+            "instrument" : "Amp",
+            "brand" : "Musicman",
+            "type": "Electric",
+            "name": "Musicman stage",
+            "color": "Black",
+            "bridge": "Head",
+            "frets": "6",
+            "quantity": 10,
+            "price": "2500",
+            "date_posted" : "15-April-2022"
+        }
+    ],
+
+    "bass": [
+        {
+            "instrument" : "bass",
+            "brand" : "Musicman",
+            "type": "Electric",
+            "name": "Musicman Jazz bass",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 10,
+            "price": "1000",
+            "date_posted" : "25-April-2022"
+        },
+        
+        {
+            "instrument" : "bass",
+            "brand" : "Musicman",
+            "type": "Acoustic",
+            "name": "Musicman jammer",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "21",
+            "quantity": 5,
+            "price": "800",
+            "date_posted" : "30-April-2022"
+        }
+    ]
+}

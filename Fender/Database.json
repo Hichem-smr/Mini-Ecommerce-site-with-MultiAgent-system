@@ -1,0 +1,128 @@
+{
+    "Guitar": [
+        {
+            "brand" : "Fender",
+            "instrument" : "Guitar",
+            "type": "Acoustic",
+            "name": "FG junior JR1",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 4,
+            "price": "90",
+            "date_posted" : "20-March-2022"
+        },
+
+        {
+            "brand" : "Fender",
+            "instrument" : "Guitar",
+            "type": "Acoustic",
+            "name": "Faith mercury",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 3,
+            "price": "550",
+            "date_posted" : "22-March-2022"
+            
+        },
+
+        {
+            "brand" : "Fender",
+            "instrument" : "Guitar",
+            "type": "Electro-Acoustic",
+            "name": "Newporter",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 10,
+            "price": "340",
+            "date_posted" : "23-March-2022"
+            
+        },
+
+        {
+            "brand" : "Fender",
+            "instrument" : "Guitar",
+            "type": "Electric",
+            "name": "Fender stratocaster",
+            "color": "Blue",
+            "bridge": "Fender",
+            "frets": "24",
+            "quantity": 20,
+            "price": "900",
+            "date_posted" : "24-March-2022"
+            
+        }
+
+    ],
+
+    "Amp": [
+        {
+            "brand" : "Fender",
+            "instrument" : "Amp",
+            "type": "Electric",
+            "name": "Fender Performer",
+            "color": "Black",
+            "bridge": "Fixed",
+            "frets": "3",
+            "quantity": 5,
+            "price": "500",
+            "date_posted" : "21-March-2022"
+        },
+
+        {
+            "brand" : "Fender",
+            "instrument" : "Amp",
+            "type": "Electric",
+            "name": "Fender super 112",
+            "color": "Black",
+            "bridge": "Combo",
+            "frets": "5",
+            "quantity": 2,
+            "price": "400",
+            "date_posted" : "21-March-2022"
+        },
+
+        {
+            "brand" : "Fender",
+            "instrument" : "Amp",
+            "type": "Electric",
+            "name": "Fender machete USA",
+            "color": "Black",
+            "bridge": "Head",
+            "frets": "4",
+            "quantity": 4,
+            "price": "1200",
+            "date_posted" : "25-March-2022"
+        }
+    ],
+
+    "bass": [
+        {
+            "brand" : "Fender",
+            "instrument" : "bass",
+            "type": "Electric",
+            "name": "Fender Jazz bass",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 10,
+            "price": "500",
+            "date_posted" : "22-March-2022"
+        },
+        
+        {
+            "brand" : "Fender",
+            "instrument" : "bass",
+            "type": "Acoustic",
+            "name": "Fender squier",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "21",
+            "quantity": 5,
+            "price": "250",
+            "date_posted" : "26-March-2022"
+        }
+    ]
+}

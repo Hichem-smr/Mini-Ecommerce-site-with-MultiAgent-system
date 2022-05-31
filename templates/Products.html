@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for post in posts %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ post.type + " " + post.instrument }}</a>
+              <small class="text-muted">{{ post.date_posted }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ post.name }} : {{post.brand}}</a></h2>
+            <div class="article-metadata">
+              {% if post.type not in "Guitar" or "bass" %}
+                  <p class="article-content">{{"effects : " + post.frets + "\nColor : " + post.color + "\nportability : " + post.bridge}}</p>  
+              {% else %}
+                  <p class="article-content">{{"Bridge : " + post.bridge + "\nColor : " + post.color + "\nFrets : " + post.frets}}</p>
+              {% endif %}
+            </div>
+            <a class="mr-2" href="#">{{"Quantity"}} : {{post.quantity}}</a>
+
+            <input class="quant" name="quant" id="a" type="number" min="1" max={{post.quantity}} required>
+            <br>
+            <a>{{"Price:"}}</a>
+            <a class="mr-2" href="#">{{post.price + "$"}}</a>
+            <button type="submit" class="purchase" onclick="myFunction({{post.quantity}},'{{post.brand}}', '{{post.name}}', '{{post.price}}')">Purchase</button>
+
+            <script>
+              function ajaxcall(quantity, brand, name){
+                $.ajax({
+                        url : "{{ url_for('quantity_update') }}",
+                        type: 'POST',
+                        data: {new_quantity: JSON.stringify(quantity), brand: JSON.stringify(brand), name: JSON.stringify(name)}
+                    });
+              }
+              function myFunction(quant, brand, name, price) {
+                var a = document.getElementById('a').value;
+                prix = parseInt(price) * quant
+                let text = "Press a button!\n--OK to Purchase (Total price : " + prix + ")\n--Cancel to cancel.";
+                if (a) {
+                  if(confirm(text)){
+                    alert("Congrats, the product has been bought");
+                    quantity = quant - a;
+                    ajaxcall(quantity, brand, name);
+                  }
+                } else {
+                  alert("Please insert a value before buying")
+                }
+                document.getElementById("demo").innerHTML = text;
+              }
+              </script>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+
+
+

@@ -1,0 +1,141 @@
+{
+    "Guitar": [
+        {
+            "brand" : "Yamaha",
+            "instrument" : "Guitar",
+            "type": "Acoustic",
+            "name": "Birch",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 4,
+            "price": "700" ,
+            "date_posted" : "25-May-2022"
+        },
+
+        {
+            "brand" : "Yamaha",
+            "instrument" : "Guitar",
+            "type": "Acoustic",
+            "name": "NCX5 NT",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 3,
+            "price": "300",
+            "date_posted" : "30-May-2022"
+            
+        },
+
+        {
+            "brand" : "Yamaha",
+            "instrument" : "Guitar",
+            "type": "Electro-Acoustic",
+            "name": "NTX700",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 10,
+            "price": "500",
+            "date_posted" : "20-May-2022"
+            
+        },
+
+        {
+            "brand" : "Yamaha",
+            "instrument" : "Guitar",
+            "type": "Electric",
+            "name": "Pacifica",
+            "color": "White",
+            "bridge": "Push-pull",
+            "frets": "24",
+            "quantity": 20,
+            "price": "1500",
+            "date_posted" : "25-May-2022"
+            
+        }
+
+    ],
+
+    "Amp": [
+        {
+            "brand" : "Yamaha",
+            "instrument" : "Amp",
+            "type": "Electric",
+            "name": "Yamaha Thr10-II",
+            "color": "White",
+            "bridge": "Combo",
+            "frets": "10",
+            "quantity": 15,
+            "price": "300",
+            "date_posted" : "21-May-2022"
+        },
+
+        {
+            "instrument" : "Amp",
+            "brand" : "Yamaha",
+            "type": "Electric",
+            "name": "Yamaha Thr5",
+            "color": "White",
+            "bridge": "Combo",
+            "frets": "4",
+            "quantity": 10,
+            "price": "200",
+            "date_posted" : "22-May-2022"
+        },
+
+        {
+            "instrument" : "Amp",
+            "brand" : "Yamaha",
+            "type": "Electric",
+            "name": "Yamaha thr10X",
+            "color": "Black",
+            "bridge": "Combo",
+            "frets": "6",
+            "quantity": 10,
+            "price": "250",
+            "date_posted" : "23-May-2022"
+        },
+
+        {
+            "instrument" : "Amp",
+            "brand" : "Yamaha",
+            "type": "Acoustic",
+            "name": "Yamaha cubte performer",
+            "color": "White",
+            "bridge": "Combo",
+            "frets": "3",
+            "quantity": 6,
+            "price": "200",
+            "date_posted" : "22-May-2022"
+        }
+    ],
+
+    "bass": [
+        {
+            "instrument" : "bass",
+            "brand" : "Yamaha",
+            "type": "Electric",
+            "name": "BBNE 2",
+            "color": "White",
+            "bridge": "Fixed",
+            "frets": "22",
+            "quantity": 10,
+            "price": "800",
+            "date_posted" : "21-May-2022"
+        },
+        
+        {
+            "instrument" : "bass",
+            "brand" : "Yamaha",
+            "type": "Acoustic",
+            "name": "LL6",
+            "color": "Brown",
+            "bridge": "Fixed",
+            "frets": "21",
+            "quantity": 5,
+            "price": "500",
+            "date_posted" : "20-May-2022"
+        }
+    ]
+}
