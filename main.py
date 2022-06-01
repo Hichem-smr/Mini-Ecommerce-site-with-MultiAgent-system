@@ -1,30 +1,59 @@
-from flask import Flask, render_template, url_for, request
 import time
-from spade import agent, quit_spade,web
-from spade.behaviour import OneShotBehaviour, CyclicBehaviour
+from spade.agent import Agent
+from spade.behaviour import OneShotBehaviour
 from spade.message import Message
 from spade.template import Template
-from pprint import pprint
-import json
-import time
 
-from flask import Flask, flash, redirect, render_template, \
-     request, url_for
 
-app = Flask(__name__)
+class SenderAgent(Agent):
+    class InformBehav(OneShotBehaviour):
+        async def run(self):
+            msg = Message(to="fender@localhost")     # Instantiate the message
+            # msg.set_metadata("performative", "inform")  # Set the "inform" FIPA performative
+            msg.body = "Hello World"                    # Set the message content
 
-@app.route('/')
-def index():
-    return render_template(
-        'index.html',
-        data=[{'name':'red'}, {'name':'green'}, {'name':'blue'}])
+            await self.send(msg)
 
-@app.route("/test" , methods=['GET', 'POST'])
-def test():
-    select = request.form.get('comp_select')
-    print((select))
-    return(str(select))
+            # stop agent from behaviour
+            await self.agent.stop()
 
-if __name__=='__main__':
-    app.run(debug=True)
+    async def setup(self):
+        b = self.InformBehav()
+        self.add_behaviour(b)
 
+class ReceiverAgent(Agent):
+    class RecvBehav(OneShotBehaviour):
+        async def run(self):
+
+            msg = await self.receive(timeout=10) # wait for a message for 10 seconds
+            if msg:
+                print("Message received with content: {}".format(msg.body))
+            else:
+                print("Did not received any message after 10 seconds")
+
+            # stop agent from behaviour
+            await self.agent.stop()
+
+    async def setup(self):
+        b = self.RecvBehav()
+        template = Template()
+        template.set_metadata("performative", "inform")
+        self.add_behaviour(b, template)
+
+
+
+if __name__ == "__main__":
+    receiveragent = ReceiverAgent("fender@localhost", "")
+    future = receiveragent.start()
+    future.result() # wait for receiver agent to be prepared.
+    senderagent = SenderAgent("yamaha@localhost", "")
+    senderagent.start()
+
+    while receiveragent.is_alive():
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            senderagent.stop()
+            receiveragent.stop()
+            break
+    print("Agents finished")

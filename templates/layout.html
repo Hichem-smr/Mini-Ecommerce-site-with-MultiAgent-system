@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+<style>
+  body {
+    background-image: url('concert.jpg');
+  }
+  </style>
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -27,7 +32,7 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="/">Products</a>
-              <a class="nav-item nav-link" href="/Amps">Amps</a>
+              <a class="nav-item nav-link" href="/Promotions">Promotions</a>
             </div>
             </div>
           </div>
@@ -82,7 +87,16 @@
                     <option value="2">250-1000$</option>
                     <option value="3">1000-2000$</option>
                     <option value="4">2000++$</option>
+                  </select>                  
+                  <br>
+                  <select name="Order" id="Order">
+                    <option value="None">--None--</option>
+                    <option value="1">Descending Price</option>
+                    <option value="2">Ascending Price</option>
+                    <option value="3">Recent date</option>
+                    <option value="4">Oldest date</option>
                   </select>
+
                 </ul>
                 <button type="submit" class="btn btn-default">Go</button>
             </form>

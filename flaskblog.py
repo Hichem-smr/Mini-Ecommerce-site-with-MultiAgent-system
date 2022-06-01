@@ -6,41 +6,64 @@ from spade.behaviour import OneShotBehaviour, CyclicBehaviour
 from spade.message import Message
 from spade.template import Template
 from pprint import pprint
+from dateutil.parser import parse 
 import json
+from collections import OrderedDict
+import urllib
 import time
 app = Flask(__name__)
 
 posts = []
 posts_filtered = []
-
+new_quantity = None
+brand = None
+name = None
+inst = None
+first_launch = 0
+first_launch1 = 0
+first_launch2 = 0
 class fenderAgent(agent.Agent):
     class InformBehav(OneShotBehaviour):
         async def run(self):
             msg = Message(to="central@localhost", sender="fender@localhost", body=str(fenderAgent.guitars() + fenderAgent.amps() + fenderAgent.bass()))
+            print("sending my message")
             await self.send(msg)
 
     class sellProduct(CyclicBehaviour):
         async def run(self):	
             msg = await self.receive(timeout=15)
             if msg: 
-                name = msg.body.split("")[1]
-                quantity = msg.body.split("")[0]
-                inst = msg.body.split("")[2]
+                name = msg.body.split(" ")[1]
+                quantity = msg.body.split(" ")[0]
+                inst = msg.body.split(" ")[2]
+                print(name, quantity, inst)
                 f = open('Fender/Database.json')
-                f.close()
                 Fender = json.load(f)
-                for inst in Fender[inst]:
-                    if(inst["name"] == name):
-                        inst['quantity'] = inst['quantity'] - quantity
+                f.close()
+
+                if("Gui" in inst):
+                    i = 'Guitar'
+                elif("Amp" in inst):
+                    i = 'Amp'
+                elif("bass" in inst):
+                    i = 'bass'
+
+                for inst in Fender[i]:
+                    if(str(inst["name"]) in name):
+                        inst['quantity'] = int(quantity)
+                        print("quantity updated!", inst['quantity'])
 
                 with open('Fender/Database.json', 'w') as fp:
-                    json.dumps(Fender, indent=4)
+                    json.dump(Fender, fp,  indent=4)
 
     async def setup(self):
+        global first_launch1
         b = self.InformBehav()
         self.add_behaviour(b)
-        a = self.sellProduct()
-        self.add_behaviour(a)
+        if first_launch1 == 0:
+            first_launch1 = 1
+            a = self.sellProduct()
+            self.add_behaviour(a)
 
     def guitars():
         f = open('Fender/Database.json')
@@ -69,24 +92,37 @@ class musicmanAgent(agent.Agent):
         async def run(self):	
             msg = await self.receive(timeout=15)
             if msg: 
-                name = msg.body.split("")[1]
-                quantity = msg.body.split("")[0]
-                inst = msg.body.split("")[2]
-                f = open('musicman/Database.json')
-                f.close()
+                name = msg.body.split(" ")[1]
+                quantity = msg.body.split(" ")[0]
+                inst = msg.body.split(" ")[2]
+                print(name, quantity, inst)
+                f = open('Musicman/Database.json')
                 musicman = json.load(f)
-                for inst in musicman[inst]:
-                    if(inst["name"] == name):
-                        inst['quantity'] = inst['quantity'] - quantity
+                f.close()
 
-                with open('musicman/Database.json', 'w') as fp:
-                    json.dumps(musicman, indent=4)
+                if("Gui" in inst):
+                    i = 'Guitar'
+                elif("Amp" in inst):
+                    i = 'Amp'
+                elif("bass" in inst):
+                    i = 'bass'
+
+                for inst in musicman[i]:
+                    if(str(inst["name"]) in name):
+                        inst['quantity'] = int(quantity)
+                        print("quantity updated!", inst['quantity'])
+
+                with open('Musicman/Database.json', 'w') as fp:
+                    json.dump(musicman, fp,  indent=4)
     
     async def setup(self):
+        global first_launch2
         b = self.InformBehav()
         self.add_behaviour(b)
-        a = self.sellProduct()
-        self.add_behaviour(a)
+        if(first_launch2 == 0):
+            first_launch2 = 1
+            a = self.sellProduct()
+            self.add_behaviour(a)
 
     def guitars():
         f = open('Musicman/Database.json')
@@ -115,24 +151,37 @@ class YamahaAgent(agent.Agent):
         async def run(self):	
             msg = await self.receive(timeout=15)
             if msg: 
-                name = msg.body.split("")[1]
-                quantity = msg.body.split("")[0]
-                inst = msg.body.split("")[2]
+                name = msg.body.split(" ")[1]
+                quantity = msg.body.split(" ")[0]
+                inst = msg.body.split(" ")[2]
+                print(name, quantity, inst)
                 f = open('Yamaha/Database.json')
-                f.close()
                 Yamaha = json.load(f)
-                for inst in Yamaha[inst]:
-                    if(inst["name"] == name):
-                        inst['quantity'] = inst['quantity'] - quantity
+                f.close()
+
+                if("Gui" in inst):
+                    i = 'Guitar'
+                elif("Amp" in inst):
+                    i = 'Amp'
+                elif("bass" in inst):
+                    i = 'bass'
+
+                for inst in Yamaha[i]:
+                    if(str(inst["name"]) in name):
+                        inst['quantity'] = int(quantity)
+                        print("quantity updated!", inst['quantity'])
 
                 with open('Yamaha/Database.json', 'w') as fp:
-                    json.dumps(Yamaha, indent=4)
+                    json.dump(Yamaha, fp,  indent=4)
 
     async def setup(self):
+        global first_launch
         b = self.InformBehav()
         self.add_behaviour(b)
-        a = self.sellProduct()
-        self.add_behaviour(a)
+        if(first_launch == 0):
+            first_launch = 1
+            a = self.sellProduct()
+            self.add_behaviour(a)
 
     def guitars():
         f = open('Yamaha/Database.json')
@@ -156,74 +205,71 @@ class centralagent(agent.Agent):
         async def run(self):	
             global posts
             print("RecvBehav running")
-            msg = await self.receive(timeout=15)
+            msg = await self.receive(timeout=30)
             if msg: 
+                print("got the message and it says")
                 list = json.loads(msg.body.replace("\'", "\""))
-                if(list[0] not in posts):
-                    posts += list
+                posts += list
 
     async def setup(self):
-        if(len(posts) == 0):
-            b = self.RecvBehav()
-            template = Template()
-            self.add_behaviour(b, template)
-
-class BuyingAgent(agent.Agent):
-    # class BuyProduct(OneShotBehaviour):
-    #     async def run(self):	
-    #         if(brand == "Fender"):
-    #             msg = Message(to_filename="fender@localhost", body=str(quantity) + " " + name + " " + inst)
-    #             await self.send(msg)
-    #         elif(brand == "Yamaha"):
-    #             msg = Message(to="yamaha@localhost", body=str(quantity) + " " + name + " " + inst)
-    #             await self.send(msg)
-    #         elif(brand == "Musicman"):
-    #             msg = Message(to="musicman@localhost", body=str(quantity) + " " + name + " " + inst)
-    #             await self.send(msg)
-
-    async def setup(self):
-        b = self.BuyProduct()
+        b = self.RecvBehav()
         template = Template()
         self.add_behaviour(b, template)
 
+class BuyingAgent(agent.Agent):
+    class BuyProduct(OneShotBehaviour):
+        async def run(self):	
+            global new_quantity, name, brand, inst
+            if("Fender" in brand.strip()):
+                msg = Message(to="fender@localhost", body=str(new_quantity) + " " + name + " " + inst)
+                await self.send(msg)
+            elif("Yamaha" in brand.strip()):
+                msg = Message(to="yamaha@localhost", body=str(new_quantity) + " " + name + " " + inst)
+                await self.send(msg)
+            elif("Musicman" in brand.strip()):
+                msg = Message(to="musicman@localhost", body=str(new_quantity) + " " + name + " " + inst)
+                await self.send(msg)
+
+    async def setup(self):
+        b = self.BuyProduct()
+        self.add_behaviour(b)
+
+fender = fenderAgent("fender@localhost", "")
+Musicman = musicmanAgent("musicman@localhost","")
+Yamaha = YamahaAgent("yamaha@localhost","")
+central = centralagent("central@localhost", "")
+recieving_pool = central.start()
+recieving_pool.result()
+
 @app.route("/")
-@app.route("/home")
+# @app.route("/home")
 def Products():
-
-    if(len(posts) == 0):
-        central = centralagent("central@localhost", "")
-        fender = fenderAgent("fender@localhost", "")
-        Musicman = musicmanAgent("musicman@localhost","")
-        Yamaha = YamahaAgent("yamaha@localhost","")
-
-        recieving_pool = central.start()
-        recieving_pool.result()
-
-        sending_fender = fender.start()
-        sending_fender.result()
-
-        sending_musicman = Musicman.start()
-        sending_musicman.result()
-
-        sending_Yamaha = Yamaha.start()
-        sending_Yamaha.result()
-
-
-
+    global posts
+    posts = []
+    sending_fender = fender.start()
+    sending_musicman = Musicman.start()
+    sending_Yamaha = Yamaha.start()
+    sending_fender.result()
+    sending_musicman.result()
+    sending_Yamaha.result()
+    time.sleep(1)
     return render_template('Products.html',title='All Products', posts=posts)
 
 
-@app.route("/Amps")
-def Amps():
-    return render_template('Amps.html', title='Amps')
+@app.route("/Promotions")
+def Promo():
+    return render_template('Promotions.html', title='Promotions')
 
-@app.route("/submit", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def submit():
+    global posts
     brand = request.form.get('brand')
     price = request.form.get('Price')
     inst = request.form.get('Instrument')
     type = request.form.get('Type')
     color = request.form.get('Color')
+    order = request.form.get('Order')
+    print("hi im the order", order)
     
     def brand_filter(posts, brand):
         if brand == "None":
@@ -268,16 +314,32 @@ def submit():
                             yield post
                 elif price == 2:
                     for post in posts:
-                        if(int(post['price']) > 250 and int(post['price']) < 1000):
+                        if(int(post['price']) >= 250 and int(post['price']) < 1000):
                             yield post
                 elif price == 3:
                     for post in posts:
-                        if(int(post['price']) > 1000 and int(post['price']) < 2000):
+                        if(int(post['price']) >= 1000 and int(post['price']) < 2000):
                             yield post
                 elif price == 4:
                     for post in posts:
-                        if(int(post['price']) > 2000):
+                        if(int(post['price']) >= 2000):
                             yield post
+
+    def order_filter(posts, color):
+        if(color == 1):
+            posts = sorted(posts, key = lambda i: int(i['price']),reverse=True)
+            return posts
+        elif(color == 2):
+            posts = sorted(posts, key = lambda i: int(i['price']))
+            return posts
+        elif(color == 3):      
+            posts = sorted(posts, key = lambda i: parse(i['date_posted']),reverse=True)
+            return posts
+        elif(color == 4):
+            posts = sorted(posts, key = lambda i: parse(i['date_posted']))
+            return posts
+
+
     filtered_posts = posts.copy()
     if(brand != "None"):
         filtered_posts = brand_filter(filtered_posts, brand)
@@ -289,6 +351,8 @@ def submit():
         filtered_posts = type_filter(list(filtered_posts), type)
     if(price != "None"):
         filtered_posts = price_filter(list(filtered_posts), int(price))
+    if(order != "None"):
+        filtered_posts = order_filter(list(filtered_posts), int(order))
 
     filtered_posts = list(filtered_posts)
     return render_template('Products.html', posts=filtered_posts)
@@ -296,16 +360,18 @@ def submit():
 @app.route('/quantity_update', methods = ['POST', 'GET'])
 def quantity_update():
     if request.method == "POST":
+        global brand, name, new_quantity, inst
         print("im accessing")
         new_quantity = str(request.form['new_quantity'])
         brand = str(request.form['brand'])
         name = str(request.form['name'])
-        print(new_quantity, name, brand)
+        inst = str(request.form['inst'])
 
-        # BuyingAgt = BuyingAgent("yamaha@localhost","")
-        # Buying_start = BuyingAgt.start()
-        # Buying_start.result()
+        BuyingAgt = BuyingAgent("BuyingAgt@localhost","")
+        Buying_start = BuyingAgt.start()
+        Buying_start.result()
 
+        Products()
         return str(request.form['new_quantity'])
 
 app.run(debug=True)

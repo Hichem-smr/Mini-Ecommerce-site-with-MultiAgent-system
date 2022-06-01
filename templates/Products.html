@@ -8,45 +8,85 @@
               <small class="text-muted">{{ post.date_posted }}</small>
             </div>
             <h2><a class="article-title" href="#">{{ post.name }} : {{post.brand}}</a></h2>
+            
             <div class="article-metadata">
-              {% if post.type not in "Guitar" or "bass" %}
-                  <p class="article-content">{{"effects : " + post.frets + "\nColor : " + post.color + "\nportability : " + post.bridge}}</p>  
-              {% else %}
-                  <p class="article-content">{{"Bridge : " + post.bridge + "\nColor : " + post.color + "\nFrets : " + post.frets}}</p>
-              {% endif %}
-            </div>
+              <div class="container">
+                <div class="image">
+                  <img src="static/{{post.image}}">
+                </div>
+                      {% if post.type not in "Guitar" or "bass" %}
+                          <p class="article-content">{{"effects : " + post.frets + "\nColor : " + post.color + "\nportability : " + post.bridge}}</p>  
+                      {% else %}
+                          <p class="article-content">{{"Bridge : " + post.bridge + "\nColor : " + post.color + "\nFrets : " + post.frets}}</p>
+                      {% endif %}
+              </div>
+          </div>
+
+
             <form>
               <a class="mr-2" href="#">{{"Quantity"}} : {{post.quantity}}</a>
-              <input class="quant" name="quant" type="number" min="1" max={{post.quantity}} required>
+              <input class="quant" name="quant" type="number" min="0" max={{post.quantity}} required>
               <br>
               <a>{{"Price:"}}</a>
               <a class="mr-2" href="#">{{post.price + "$"}}</a>
-              <button type="submit" class="purchase" onclick="myFunction(this.form, {{post.quantity}},'{{post.brand}}', '{{post.name}}', '{{post.price}}')">Purchase</button>
+              <button type="submit" class="purchase" onclick="myFunction(this.form, {{post.quantity}},'{{post.brand}}', '{{post.name}}', '{{post.price}}', '{{post.instrument}}')">Purchase</button>
             </form>
 
             <script>
-              function ajaxcall(quantity, brand, name){
+              function ajaxcall(quantity, brand, name, inst){
                 $.ajax({
                         url : "{{ url_for('quantity_update') }}",
                         type: 'POST',
-                        data: {new_quantity: JSON.stringify(quantity), brand: JSON.stringify(brand), name: JSON.stringify(name)}
+                        data: {new_quantity: JSON.stringify(quantity), brand: JSON.stringify(brand), name: JSON.stringify(name), inst: JSON.stringify(inst)}
                     });
               }
               
-              function myFunction(form, quant, brand, name, price) {
+              function myFunction(form, quant, brand, name, price, inst) {
                 let a = form.querySelector(".quant").value;
                 prix = parseInt(price) * a
-                let text = "Press a button!\n--OK to Purchase (Total price : " + prix + ")\n--Cancel to cancel.";
                 if (a) {
-                  if(confirm(text)){
-                    alert("Congrats, the product has been bought");
-                    quantity = quant - a;
-                    ajaxcall(quantity, brand, name);
+                  if(a == 0){
+                    alert("You need to specify a quantity");
                   }
+                  else{
+                    prix = parseInt(price) * a;
+                    if(brand == "Musicman"){
+                      let text = "MUSICMAN PROMOTION!! (HALF THE PRICE OF THE SECOND PRODUCT INTO TOTAL PRICE !";
+                      alert(text)
+                      if(a > 1){
+                        prix = parseInt(price) * (a-0.5)
+                      }
+                    }
+                    else{
+                      if(brand == "Yamaha"){
+                        let text = "YAMAHA PROMOTION!! (FOR ARTICLE THAT HAS A QUANTITY LESSER THAN 4 PRODUCTS 200 OF THE PRICE IS CUT !";
+                        alert(text)
+                        if(quant<4){
+                          prix = (parseInt(price) - 200)*a
+                        }
+                      }
+                      else{
+                      if(brand == "Fender"){
+                        let text = "FENDER PROMOTION!! (FOR A TOTAL PRICE THAT SURPASSES 1500, 300 OF THE PRICE IS CUT !";
+                        alert(text)
+                        if(a*parseInt(price)>1500){
+                          prix = parseInt(price)*a - 300
+                        }
+                      }
+                    }
+                  }
+                      let text = "--OK to Purchase (Total price : " + prix + ")\n--Cancel to cancel.";
+                      if(confirm(text)){
+                        alert("Congrats, the product has been bought");
+                        quantity = quant - a;
+                        ajaxcall(quantity, brand, name, inst);
+                    }
+                  
+                  }
+
                 } else {
                   alert("Please insert a value before buying")
                 }
-                document.getElementById("demo").innerHTML = text;
               }
               </script>
           </div>
